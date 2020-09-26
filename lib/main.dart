@@ -2,6 +2,7 @@ import 'package:firebase_user_avatar_flutter/app/sign_in/sign_in_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import 'app/auth_widget.dart';
 import 'services/firebase_auth_service.dart';
 
 
@@ -14,7 +15,7 @@ class MyApp extends StatelessWidget {
       create: (_) => FirebaseAuthService(),
           child: MaterialApp(
         theme: ThemeData(primarySwatch: Colors.indigo),
-        home: SignInPage(),
+        home: AuthWidget(),
       ),
     );
   }
