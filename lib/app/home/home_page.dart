@@ -3,11 +3,16 @@ import 'dart:async';
 import 'package:firebase_user_avatar_flutter/app/home/about_page.dart';
 import 'package:firebase_user_avatar_flutter/common_widgets/avatar.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
 import '../../models/avatar_reference.dart';
+
 import '../../services/firebase_auth_service.dart';
+import '../../services/firebase_storage_service.dart';
 import '../../services/firestore_service.dart';
+
+import '../../services/image_picker_service.dart';
 
 class HomePage extends StatelessWidget {
   Future<void> _signOut(BuildContext context) async {
@@ -31,10 +36,23 @@ class HomePage extends StatelessWidget {
   Future<void> _chooseAvatar(BuildContext context) async {
     try {
       // 1. Get image from picker
-
-      // 2. Upload to storage
-      // 3. Save url to Firestore
-      // 4. (optional) delete local file as no longer needed
+      final imagePiker = Provider.of<ImagePickerService>(context);
+      final file = await imagePiker.pickImage(source: ImageSource.camera);
+      if (file != null) {
+        // 2. Upload to storage
+        final user = Provider.of<User>(context, listen: false);
+        final storege = Provider.of<FirebaseStorageService>(context);
+        final downloadUrl =
+            await storege.uploadAvatar(uid: user.uid, file: file);
+        // 3. Save url to Firestore
+        final database = Provider.of<FirestoreService>(context);
+        await database.setAvatarReference(
+          uid: user.uid,
+          avatarReference: AvatarReference(downloadUrl),
+        );
+        // 4. (optional) delete local file as no longer needed
+        await file.delete();
+      }
     } catch (e) {
       print(e);
     }
@@ -81,8 +99,10 @@ class HomePage extends StatelessWidget {
     return StreamBuilder<AvatarReference>(
         stream: database.avatarReferenceStream(uid: user.uid),
         builder: (context, snapshot) {
+          final avatarReference = snapshot.data;
           return Avatar(
-            photoUrl: null,
+            photoUrl: avatarReference
+                ?.downloadUrl, //Si viene nulo ponemos la camarita
             radius: 50,
             borderColor: Colors.black54,
             borderWidth: 2.0,

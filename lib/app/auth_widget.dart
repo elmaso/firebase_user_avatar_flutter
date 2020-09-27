@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../services/firebase_auth_service.dart';
 import 'home/home_page.dart';
-import 'home/home_page.dart';
+
 import 'sign_in/sign_in_page.dart';
 
 class AuthWidget extends StatelessWidget {
@@ -25,7 +25,7 @@ class AuthWidget extends StatelessWidget {
               child: HomePage(),
             );
           }
-          SignInPage();
+          return SignInPage();
         }
         return Scaffold(
           body: Center(
