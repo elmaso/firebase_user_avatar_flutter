@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../services/firebase_auth_service.dart';
 import 'home/home_page.dart';
+import 'home/home_page.dart';
 import 'sign_in/sign_in_page.dart';
 
 class AuthWidget extends StatelessWidget {
@@ -17,7 +18,14 @@ class AuthWidget extends StatelessWidget {
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.active) {
           final user = snapshot.data;
-          return user != null ? HomePage() : SignInPage();
+          // Cambiamos a favor de manejar el usuario via Provider a toda el app
+          if (user != null) {
+            return Provider<User>.value(
+              value: user,
+              child: HomePage(),
+            );
+          }
+          SignInPage();
         }
         return Scaffold(
           body: Center(

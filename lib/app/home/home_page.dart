@@ -5,7 +5,9 @@ import 'package:firebase_user_avatar_flutter/common_widgets/avatar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../models/avatar_reference.dart';
 import '../../services/firebase_auth_service.dart';
+import '../../services/firestore_service.dart';
 
 class HomePage extends StatelessWidget {
   Future<void> _signOut(BuildContext context) async {
@@ -29,7 +31,7 @@ class HomePage extends StatelessWidget {
   Future<void> _chooseAvatar(BuildContext context) async {
     try {
       // 1. Get image from picker
-      
+
       // 2. Upload to storage
       // 3. Save url to Firestore
       // 4. (optional) delete local file as no longer needed
@@ -73,13 +75,19 @@ class HomePage extends StatelessWidget {
   }
 
   Widget _buildUserInfo({BuildContext context}) {
-    // TODO: Download and show avatar from Firebase storage
-    return Avatar(
-      photoUrl: null,
-      radius: 50,
-      borderColor: Colors.black54,
-      borderWidth: 2.0,
-      onPressed: () => _chooseAvatar(context),
-    );
+    final database = Provider.of<FirestoreService>(context);
+    // como ahora tenemos provider podemos llamar user (solucion naive)
+    final user = Provider.of<User>(context, listen: false);
+    return StreamBuilder<AvatarReference>(
+        stream: database.avatarReferenceStream(uid: user.uid),
+        builder: (context, snapshot) {
+          return Avatar(
+            photoUrl: null,
+            radius: 50,
+            borderColor: Colors.black54,
+            borderWidth: 2.0,
+            onPressed: () => _chooseAvatar(context),
+          );
+        });
   }
 }
