@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
       ],
       child: AuthWidgetBuilder(builder: (context, userSanpthot) {
         return MaterialApp(
-          theme: ThemeData(primarySwatch: Colors.indigo),
+          theme: ThemeData(primarySwatch: Colors.teal),
           home: AuthWidget(userSnapshot: userSanpthot,),
         );
       }),

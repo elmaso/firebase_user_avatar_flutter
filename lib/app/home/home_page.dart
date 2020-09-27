@@ -12,10 +12,8 @@ import '../../services/firebase_auth_service.dart';
 
 import '../../services/firebase_storage_service.dart';
 import '../../services/firestore_service.dart';
+import '../../services/image_picker_service.dart';
 
-import '../../services/firestore_service.dart';
-import '../../services/image_picker_service.dart';
-import '../../services/image_picker_service.dart';
 
 class HomePage extends StatelessWidget {
   Future<void> _signOut(BuildContext context) async {
@@ -63,7 +61,7 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Home'),
+        title: Text('Inicio'),
         leading: IconButton(
           icon: Icon(Icons.help),
           onPressed: () => _onAbout(context),
