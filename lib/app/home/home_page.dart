@@ -29,6 +29,7 @@ class HomePage extends StatelessWidget {
   Future<void> _chooseAvatar(BuildContext context) async {
     try {
       // 1. Get image from picker
+      
       // 2. Upload to storage
       // 3. Save url to Firestore
       // 4. (optional) delete local file as no longer needed
