@@ -23,12 +23,7 @@ class MyApp extends StatelessWidget {
             Provider<ImagePickerService>(
               create: (_) => ImagePickerService(),
               ),
-            Provider<FirebaseStorageService>(
-              create: (_) => FirebaseStorageService(),
-              ),
-            Provider<FirestoreService>(
-              create: (_) => FirestoreService(),
-              )
+           
           ],
           child: MaterialApp(
             theme: ThemeData(primarySwatch: Colors.indigo),
