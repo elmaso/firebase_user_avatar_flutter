@@ -9,15 +9,19 @@ import 'package:provider/provider.dart';
 import '../../models/avatar_reference.dart';
 
 import '../../services/firebase_auth_service.dart';
+
 import '../../services/firebase_storage_service.dart';
 import '../../services/firestore_service.dart';
 
+import '../../services/firestore_service.dart';
+import '../../services/image_picker_service.dart';
 import '../../services/image_picker_service.dart';
 
 class HomePage extends StatelessWidget {
   Future<void> _signOut(BuildContext context) async {
     try {
-      final auth = Provider.of<FirebaseAuthService>(context);
+      final auth = context.read<
+          FirebaseAuthService>(); // Provider.of<FirebaseAuthService>(context);
       await auth.signOut();
     } catch (e) {
       print(e);
@@ -36,18 +40,17 @@ class HomePage extends StatelessWidget {
   Future<void> _chooseAvatar(BuildContext context) async {
     try {
       // 1. Get image from picker
-      final imagePiker = Provider.of<ImagePickerService>(context);
+      final imagePiker = context.read<ImagePickerService>();
+      // Provider.of<ImagePickerService>(context, listen: false);
       final file = await imagePiker.pickImage(source: ImageSource.camera);
       if (file != null) {
         // 2. Upload to storage
-        final storege = Provider.of<FirebaseStorageService>(context);
-        final downloadUrl =
-            await storege.uploadAvatar( file: file);
+        final storege = context.read<FirebaseStorageService>();
+        final downloadUrl = await storege.uploadAvatar(file: file);
         // 3. Save url to Firestore
-        final database = Provider.of<FirestoreService>(context);
+        final database = context.read<FirestoreService>();
         await database.setAvatarReference(
-          avatarReference: AvatarReference(downloadUrl)
-        );
+            avatarReference: AvatarReference(downloadUrl));
         // 4. (optional) delete local file as no longer needed
         await file.delete();
       }
@@ -91,7 +94,7 @@ class HomePage extends StatelessWidget {
   }
 
   Widget _buildUserInfo({BuildContext context}) {
-    final database = Provider.of<FirestoreService>(context);
+    final database = context.watch<FirestoreService>();
     return StreamBuilder<AvatarReference>(
         stream: database.avatarReferenceStream(),
         builder: (context, snapshot) {

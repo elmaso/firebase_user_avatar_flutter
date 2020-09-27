@@ -6,7 +6,7 @@ import '../../services/firebase_auth_service.dart';
 class SignInPage extends StatelessWidget {
   Future<void> _signInAnonymously(BuildContext context) async {
     try {
-      final auth = Provider.of<FirebaseAuthService>(context);
+      final auth = Provider.of<FirebaseAuthService>(context, listen: false);
       final user = await auth.signInAnonymously();
       print('uid: ${user.uid}');
     } catch (e) {

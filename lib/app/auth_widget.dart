@@ -3,7 +3,9 @@ import '../services/firebase_auth_service.dart';
 import 'home/home_page.dart';
 import 'sign_in/sign_in_page.dart';
 
-
+/// Builds the signed-in or non signed-in UI, depending on the user snapshot.
+/// This widget should be below the [MaterialApp].
+/// An [AuthWidgetBuilder] ancestor is required for this widget to work.
 class AuthWidget extends StatelessWidget {
   const AuthWidget({Key key, @required this.userSnapshot}) : super(key: key);
   final AsyncSnapshot<User> userSnapshot;

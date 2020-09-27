@@ -4,8 +4,7 @@ import 'package:provider/provider.dart';
 import 'app/auth_widget.dart';
 import 'app/auth_widget_builder.dart';
 import 'services/firebase_auth_service.dart';
-import 'services/firebase_storage_service.dart';
-import 'services/firestore_service.dart';
+
 import 'services/image_picker_service.dart';
 
 void main() => runApp(MyApp());

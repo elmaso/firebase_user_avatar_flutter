@@ -1,6 +1,5 @@
 import 'package:firebase_user_avatar_flutter/common_widgets/avatar.dart';
 import 'package:firebase_user_avatar_flutter/models/avatar_reference.dart';
-import 'package:firebase_user_avatar_flutter/services/firebase_auth_service.dart';
 import 'package:firebase_user_avatar_flutter/services/firestore_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -31,7 +30,7 @@ class AboutPage extends StatelessWidget {
             ),
             SizedBox(height: 32),
             Text(
-              'by Andrea Bizzotto',
+              'by Andrea Bizzotto and Maso',
               style: Theme.of(context).textTheme.headline6,
             ),
             SizedBox(height: 32),
@@ -46,7 +45,7 @@ class AboutPage extends StatelessWidget {
   }
 
   Widget _buildUserInfo({BuildContext context}) {
-    final database = Provider.of<FirestoreService>(context);
+    final database = context.watch<FirestoreService>();
     return StreamBuilder<AvatarReference>(
       stream: database.avatarReferenceStream(),
       builder: (context, snapshot) {
